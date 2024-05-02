@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProdukController;
+use App\Models\Produk;
 use GuzzleHttp\Handler\Proxy;
 
 /*
@@ -23,5 +24,9 @@ Route::get('/', function () {
 
 
 Route::get('/produk', [ProdukController::class, 'index'])->name('Produk.index');
+Route::get('/produk/menu', [ProdukController::class, 'menu'])->name('Produk.menu');
 Route::get('/Produk/tambah', [ProdukController::class, 'tambah'])->name('Produk.tambah');
 Route::post('/Produk', [ProdukController::class, 'store'])->name('Produk.store');
+Route::get('/produk/{id}/edit',[ProdukController::class, 'edit'])->name('Produk.edit');
+Route::match(['put', 'patch'], '/produk/{id}',[ProdukController::class, 'update'])->name('Produk.update');
+Route::delete('produk/{id}/destroy', [ProdukController::class, 'destroy'])->name('Produk.destroy');

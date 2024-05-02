@@ -16,12 +16,12 @@
             <div class="container">
                 <div class="row align-items-center justify-content-between">
                     <div class="col">
+                        <div class="col-auto text-start"> 
+                            <a href="{{ route('Produk.menu') }}">
+                                <button type="button" class="btn btn-primary">Ke Halaman Admin</button>
+                            </a>
+                        </div>
                         <h2 class="text-center fw-bold mt-2">PRODUCTS</h2>
-                    </div>
-                    <div class="col-auto align-self-start">
-                        <a href="{{ route('Produk.tambah') }}">
-                            <button class="btn btn-lg btn-dark">Tambah</button>
-                        </a>
                     </div>
                 </div>
             </div>
@@ -31,35 +31,35 @@
                     @foreach ($producs as $item)
                         <div class="col-3">
                             <div class="card bg-white w-100">
-                                <img class="rounded" src="{{ asset('storage/gambar/' . $item['Gambar']) }}">
+                                <img class="rounded" src="{{ asset('storage/gambar/' . $item->Gambar) }}">
 
                                 <div class="card-body">
                                     <div class="d-flex justify-content-between my-2">
                                         <p class="card-title fw-bold my-auto" style="font-size: 24px">
-                                            {{ $item['Nama'] }}
+                                            {{ $item->Nama }}
                                         </p>
-                                        @if ($item['Kondisi'] == 'Baru')
+                                        @if ($item->Kondisi == 'Baru')
                                             <p class="my-auto rounded py-1 bg-success px-2 fw-semibold"
-                                                style="font-size: 16px">{{ $item['Kondisi'] }}
+                                                style="font-size: 16px">{{ $item->Kondisi }}
                                             </p>
                                         @else
                                             <p class="my-auto rounded py-1 bg-warning px-2 fw-semibold"
-                                                style="font-size: 16px">{{ $item['Kondisi'] }}
+                                                style="font-size: 16px">{{ $item->Kondisi }}
                                             </p>
                                         @endif
                                     </div>
                                     <div class="d-flex justify-content-between my-2">
                                         <p class="my-auto rounded py-1 bg-success px-2 fw-semibold"
-                                            style="font-size: 16px">{{ $item['Stok'] }}
+                                            style="font-size: 16px">{{ $item->Stok }}
                                         </p>
                                         <p class="my-auto rounded py-1 bg-info px-2 fw-semibold"
                                             style="font-size: 16px">Rp.
-                                            {{ number_format($item['Harga'], 0, ',', '.') }}
+                                            {{ number_format($item->Harga, 0, ',', '.') }}
                                         </p>
                                     </div>
                                     <p class=""
                                         style="overflow: hidden;max-width: 400px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; margin: 10px auto;">
-                                        {{ $item['Deskripsi'] }}
+                                        {{ $item->Deskripsi }}
                                     </p>
                                     <button class="btn btn-primary w-100">Pesan Sekarang</button>
                                 </div>
