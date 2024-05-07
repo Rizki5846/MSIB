@@ -17,9 +17,13 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->string('gender')->nullable(); // jenis kelamin
+            $table->date('tanggal_lahir')->nullable(); // tanggal lahir
+            $table->integer('umur')->nullable(); // umur
             $table->rememberToken();
             $table->timestamps();
         });
+        
     }
 
     /**

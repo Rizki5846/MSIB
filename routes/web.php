@@ -1,9 +1,10 @@
 <?php
 
+use App\Http\Controllers\editProductController;
+use App\Http\Controllers\ProductController;
+use App\Models\Product;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ProdukController;
-use App\Models\Produk;
-use GuzzleHttp\Handler\Proxy;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -16,17 +17,14 @@ use GuzzleHttp\Handler\Proxy;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+
+Route::get('/', [ProductController::class, 'Allproduct'])->name('Produk.ListProduct');
+Route::get('/tambah',function(){
+    return view('Produk.tambah');
 });
+Route::get("/listProduct/{user_id}", [ProductController::class, 'show'])->name('Produk.ListProduct');
+Route::get("/detailuser/{user_id}", [ProductController::class, 'detailUser']);
+Route::resource('/EditProduct',editProductController::class);
 
 
 
-
-Route::get('/produk', [ProdukController::class, 'index'])->name('Produk.index');
-Route::get('/produk/menu', [ProdukController::class, 'menu'])->name('Produk.menu');
-Route::get('/Produk/tambah', [ProdukController::class, 'tambah'])->name('Produk.tambah');
-Route::post('/Produk', [ProdukController::class, 'store'])->name('Produk.store');
-Route::get('/produk/{id}/edit',[ProdukController::class, 'edit'])->name('Produk.edit');
-Route::match(['put', 'patch'], '/produk/{id}',[ProdukController::class, 'update'])->name('Produk.update');
-Route::delete('produk/{id}/destroy', [ProdukController::class, 'destroy'])->name('Produk.destroy');

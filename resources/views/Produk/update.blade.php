@@ -11,7 +11,8 @@
       <div class="row">
         <div class="col-6 m-auto my-5 border border-success p-3">
           <h2 class="text-center fw-bold mb-4">Tambah data produk</h2>
-          <form method="POST" action="/EditProduct">
+          <form method="POST" action="/EditProduct/{{ $product->id }}">
+            @method('PUT')
             @csrf
                   @if ($errors->has('error'))
           <div class="alert alert-danger">
@@ -21,37 +22,38 @@
             {{-- gambar --}}
             <div class="mb-3">
               <label for="gambar_produk" class="form-label fw-bold">Gambar Produk</label>
-              <input value="{{ old('gambar_produk') }}" name="gambar_produk" type="text" class="form-control" id="gambar_produk">
+              <input value={{$product->gambar }} name="gambar" type="text" class="form-control" id="gambar_produk">
             </div>
             {{-- nama produk --}}
             <div class="mb-3">
               <label for="nama_produk" class="form-label fw-bold">Nama Produk</label>
-              <input value="{{ old('nama_produk') }}" name="nama_produk" type="text" class="form-control" id="nama_produk">
+              <input value={{$product->nama }} name="nama" type="text" class="form-control" id="nama_produk">
             </div>
             {{-- berat --}}
             <div class="mb-3">
               <label for="berat_produk" class="form-label fw-bold">berat</label>
-              <input value="{{ old('berat_produk') }}" name="berat_produk" type="number" class="form-control" id="berat_produk">
+              <input value={{$product->berat}} name="berat" type="number" class="form-control" id="berat_produk">
             </div>
             {{-- harga --}}
             <div class="mb-3">
-              <label for="harga_produk" class="form-label fw-bold">Harga</label>
-              <input value="{{ old('harga_produk') }}" name="harga_produk" type="number" class="form-control" id="harga_produk">
+              <label for="harga" class="form-label fw-bold">Harga</label>
+              <input  value={{$product->harga }} name="harga" type="number" class="form-control" id="harga_produk">
             </div>
             {{-- stok --}}
             <div class="mb-3">
               <label for="stok" class="form-label fw-bold">Stok</label>
-              <input value="{{ old('stok') }}" name="stok" type="number" class="form-control" id="stok">
+              <input value={{$product->stok }} name="stok" type="number" class="form-control" id="stok">
             </div>
-            <select name="kondisi_barang" class="form-select">
-              <option value="baru" {{ old('kondisi_barang') == 'baru' ? 'selected' : '' }}>Baru</option>
-              <option value="bekas" {{ old('kondisi_barang') == 'bekas' ? 'selected' : '' }}>bekas</option>
-          </select>
-          
-          <div class="mb-3">
-              <label for="exampleFormControlTextarea1" class="form-label fw-bold">Deskripsi</label>
-              <textarea name="deskripsi" class="form-control" id="exampleFormControlTextarea1" rows="3">{{ old('deskripsi') }}</textarea>
-          </div>
+            <select name="kondisi" class="form-select">
+                <option value="baru" {{ $product['kondisi'] == 'baru' ? 'selected' : '' }}>Baru</option>
+                <option value="second" {{ $product['kondisi'] == 'second' ? 'selected' : '' }}>Second</option>
+            </select>
+            
+            <div class="mb-3">
+                <label for="exampleFormControlTextarea1" class="form-label fw-bold">Deskripsi</label>
+                <textarea name="deskripsi" class="form-control" id="exampleFormControlTextarea1" rows="3">{{ $product->deskripsi }}</textarea>
+            </div>
+            
 
             {{-- submit --}}
             <button type="submit" class="btn btn-primary">Submit</button>

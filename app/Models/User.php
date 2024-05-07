@@ -40,5 +40,17 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'password' => 'hashed',
     ];
+
+    public function products()
+    {
+        return $this->hasMany(Product::class);
+    }
+
+
+    public function toko()
+    {
+        return $this->hasOne(Toko::class);
+    }
 }
