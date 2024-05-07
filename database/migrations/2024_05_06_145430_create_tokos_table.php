@@ -13,13 +13,15 @@ return new class extends Migration
     {
         Schema::create('tokos', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id');
+            $table->unsignedBigInteger('user_id');
             $table->string('nama');
             $table->string('alamat');
             $table->string('telepon');
             $table->string('product_terbaik');
             $table->text('deskripsi')->nullable();
             $table->timestamps();
+            
+            $table->foreign('user_id')->references('id')->on('users');
         });
         
     }

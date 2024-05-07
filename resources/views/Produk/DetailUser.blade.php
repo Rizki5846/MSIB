@@ -11,7 +11,7 @@
     <div class="container mt-5">
       <div class="row">
           <div class="col-6 border border-3 border-black p-2">
-              @if($user_id) 
+              @if($user) 
                   <p>Nama : {{ $user->name }}</p>
                   <p>email:  {{ $user->email }}</p>
                   <p>tanggal lahir  :  {{ $user->tanggal_lahir }}</p>

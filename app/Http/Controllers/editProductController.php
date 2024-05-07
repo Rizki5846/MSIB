@@ -44,10 +44,9 @@ class editProductController extends Controller
             'deskripsi' => $request->deskripsi,
 
         ];
-        // memasukan kedalam database:
         Product::insert($newProduct);
         
-        return view('Produk.product', [
+        return view('Produk.ListProduct', [
             'product' => Product::all()
         ]);
         
@@ -78,7 +77,7 @@ class editProductController extends Controller
             'deskripsi' => 'required|string',
         ]);
         Product::where('id', $id)->update($validatedData);
-        return redirect('/')->with('success', 'Category has been updated');
+        return redirect('/listProduct')->with('success', 'Category has been updated');
     }
 
     /**
@@ -93,4 +92,11 @@ class editProductController extends Controller
         $item->delete();
         return redirect()->back()->with('success', 'Data successfully deleted');
     }
+
+    public function index()
+    {
+        $product = Product::all();
+        return view('Produk.listProduct', compact('product'));
+    }
+
 }

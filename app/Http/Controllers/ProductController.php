@@ -51,20 +51,14 @@ public function show($id_user){
 }
 
 public function detailUser($id_user) {
-    // Cari pengguna berdasarkan ID
     $user = User::find($id_user);
-
-    // Cari toko berdasarkan ID pengguna
-    // Asumsi bahwa ID pengguna dan ID toko adalah sama
     $toko = Toko::where('user_id', $id_user)->first();
 
-    // Kirim data pengguna dan toko ke tampilan
     return view('Produk.detailUser', [
-        'user_id' => $user,
+        'user' => $user,
         'toko' => $toko,
     ]);
 }
-
 
 
 

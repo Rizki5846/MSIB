@@ -24,6 +24,7 @@ Route::get('/tambah',function(){
 });
 Route::get("/listProduct/{user_id}", [ProductController::class, 'show'])->name('Produk.ListProduct');
 Route::get("/detailuser/{user_id}", [ProductController::class, 'detailUser']);
+
 Route::resource('/EditProduct',editProductController::class);
 
 
