@@ -8,7 +8,9 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
   </head>
   <body>
-    <div class="container h-auto mt-5">
+    <div class="container">
+      <div class="row w-100 my-lg-5 bg-info rounded">
+          <div class="w-100 my-5">
     {{-- tabel --}}
     <div class="d-flex justify-content-between">
       <h1>List data product</h1>
@@ -19,12 +21,9 @@
 
      </div>
     </div>
-    
     <div>
-
         <table class="table mt-3 ">
             <thead>
-              
                 <tr class="table-dark">
                     <th scope="col ">No</th>
                     <th scope="col">Nama</th>

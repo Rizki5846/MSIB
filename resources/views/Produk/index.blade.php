@@ -7,6 +7,9 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
   </head>
   <body>
+    <div class="container">
+      <div class="row w-100 my-lg-5 bg-info rounded">
+          <div class="w-100 my-5">
     <h1 class="text-center mt-3">List Produk</h1>
     <div class="container bg-dange d-flex justify-content-between">
       <a class="btn btn-primary" href="/listProduct/1">admin</a>
