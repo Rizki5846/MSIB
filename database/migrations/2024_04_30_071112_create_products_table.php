@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
-            $table->foreignId("id_user");
+            $table->unsignedBigInteger("user_id");
             $table->string('nama');
             $table->decimal('harga', 10, 2);
             $table->integer('stok');
@@ -21,6 +21,8 @@ return new class extends Migration
             $table->string('gambar')->nullable();
             $table->enum('kondisi', ['baru', 'bekas'])->default('baru');
             $table->text('deskripsi')->nullable();
+
+            $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();
         });
     }
@@ -31,5 +33,9 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('products');
+        Schema::table('products', function (Blueprint $table) {
+            $table->dropColumn('user_id');
+            $table->dropForeign('user_id');
+        });
     }
 };

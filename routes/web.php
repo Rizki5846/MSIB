@@ -17,15 +17,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::post('/{user}/post-request', [ProductController::class, 'postRequest'])->name('postRequest');
+Route::get('/{user}/tambah-product', [ProductController::class, 'handleRequest'])->name('form_product');
+Route::get('/products', [ProductController::class, 'getProduct'])->name('get_product');
+Route::get('/{user}/product/{product}', [ProductController::class, 'editProduct'])->name('edit_product');
+Route::put('/{user}/product/{product}/update', [ProductController::class, 'updateProduct'])->name('update_product');
+Route::post('/{user}/product/{product}/delete', [ProductController::class, 'deleteProduct'])->name('delete_product');
+Route::get('/profile/{user}', [ProductController::class, 'getProfile'])->name('get_profile');
 
-Route::get('/', [ProductController::class, 'Allproduct'])->name('Produk.ListProduct');
-Route::get('/tambah',function(){
-    return view('Produk.tambah');
-});
-Route::get("/listProduct/{user_id}", [ProductController::class, 'show'])->name('Produk.ListProduct');
-Route::get("/detailuser/{user_id}", [ProductController::class, 'detailUser']);
-
-Route::resource('/EditProduct',editProductController::class);
-
-
-
+Route::get('/admin/{user}/list-products', [ProductController::class, 'getAdmin'])->name('Produk.admin_page');

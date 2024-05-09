@@ -9,64 +9,122 @@ use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
-    public function produk(Request $request){
-    $rules = [
-        'gambar_produk' => "Gambar Produk",
-        'nama_produk' => 'Nama Produk',
-        'berat_produk' => 'Berat Produk',
-        'harga_produk' => 'Harga Produk',
-        'stok' => 'Stok',
-        'kondisi_barang' => 'Kondisi Barang',
-        'deskripsi' => 'Deskripsi',
-    ];
-    
-    foreach ($rules as $inputName => $label) {
-        if ($request->$inputName === null) {
-            return redirect()->back()->withInput()->withErrors(['error' => "$label tidak boleh kosong."]);
+    public function getAdmin(User $user)
+    {
+        $products = Product::where('user_id', $user->id)->get();
+        return view('Produk.admin_page', ['products' => $products, 'user' => $user]);
+    }
+
+    public function editProduct(Request $request, User $user, Product $product)
+    {
+        return view('Produk.edit_product', ['product' => $product, 'user' => $user]);
+    }
+
+    public function updateProduct(Request $request, User $user, Product $product)
+    {
+        // Validasi input
+        $request->validate([
+            'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'nama' => 'required',
+            'berat' => 'required|numeric',
+            'harga' => 'required|numeric',
+            'stok' => 'required|numeric',
+            'kondisi' => 'required',
+            'deskripsi' => 'required',
+        ]);
+
+        // Cek apakah pengguna memiliki hak akses untuk memperbarui produk
+        if ($product->user_id === $user->id) {
+            // Ambil file gambar yang diunggah
+            $gambar = $request->file('gambar');
+            // Simpan gambar ke direktori yang ditentukan
+            $gambarPath = $gambar->store('public/images');
+
+            // Memperbarui atribut produk sesuai dengan data yang diterima dari permintaan
+            $product->nama = $request->nama;
+            $product->stok = $request->stok;
+            $product->berat = $request->berat;
+            $product->harga = $request->harga;
+            $product->deskripsi = $request->deskripsi;
+            $product->kondisi = $request->kondisi;
+            // Simpan lokasi gambar yang diunggah
+            $product->gambar = $gambarPath;
+            $product->save();
+
+            // Redirect ke halaman yang sesuai dengan pesan sukses
+            return redirect()->route('Produk.admin_page', ['user' => $user->id])->with('message', 'Berhasil update data');
+        } else {
+            // Jika pengguna tidak memiliki hak akses, kembalikan pesan error
+            return redirect()->back()->with('error', 'Anda tidak memiliki izin untuk memperbarui produk ini.');
         }
     }
+
+
+    public function deleteProduct(Request $request, User $user, Product $product)
+    {
+        if ($product->user_id === $user->id) {
+            $product->delete();
+        }
+        return redirect()->back()->with('status', 'Berhasil menghapus data');
+    }
+
+
+    public function handleRequest(Request $request, User $user)
+    {
+        return view('Produk.handle_request', ['user' => $user]);
+    }
+    public function postRequest(Request $request, User $user)
+    {
+        // Validasi data
+        $validatedData = $request->validate([
+            'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Gambar bisa kosong atau harus berupa gambar dengan maksimum 2MB
+            'nama' => 'required|string|max:255',
+            'berat' => 'required|numeric|min:0',
+            'harga' => 'required|numeric|min:0',
+            'stok' => 'required|integer|min:0',
+            'kondisi' => 'required|in:Bekas,Baru',
+            'deskripsi' => 'required|string',
+        ]);
     
-    // Tambahkan data produk yang baru dimasukkan ke dalam array $data
-    $newProduct = [
-        'gambar' => $request->gambar_produk,
-        'nama' => $request->nama_produk,
-        'berat' => $request->berat_produk,
-        'harga' => $request->harga_produk,
-        'stok' => $request->stok,
-        'kondisi' => $request->kondisi_barang,
-        'deskripsi' => $request->deskripsi,
-    ];
-    // memasukan kedalam database:
-    Product::insert($newProduct);
+        // Simpan data produk ke database
+        $product = new Product();
+        $product->user_id = $user->id;
+        $product->nama = $validatedData['nama'];
+        $product->berat = $validatedData['berat'];
+        $product->harga = $validatedData['harga'];
+        $product->kondisi = $validatedData['kondisi'];
+        $product->stok = $validatedData['stok'];
+        $product->deskripsi = $validatedData['deskripsi'];
     
-    return redirect()->route('Produk.ListProduk');
-}
+        if ($request->hasFile('gambar')) {
+            $path = $request->file('gambar')->storeAs(
+                'public/gambar',
+                'gambar' . time() . '.' . $request->file('gambar')->extension()
+            );
+            $product->gambar = basename($path);
+        }
+    
+        $product->save();
+    
+        // Redirect ke halaman terkait
+        return redirect()->route('Produk.admin_page', ['user' => $user->id]);
+    }
 
-public function show($id_user){
-    $produk = Product::where('id_user', $id_user)->get();
-    return view('Produk.ListProduct',[
-        'product'=> $produk,
-        'user_id' =>$id_user
-    ]);
-}
-
-public function detailUser($id_user) {
-    $user = User::find($id_user);
-    $toko = Toko::where('user_id', $id_user)->first();
-
-    return view('Produk.detailUser', [
-        'user' => $user,
-        'toko' => $toko,
-    ]);
-}
+    public function getProduct()
+    {
+        // $data = Product::all();
+        $user = User::find(1);
+        $data = $user->products;
+        // return view('list_product')->with('products', $data);
+        return view('Produk.products')->with('products', $data);
+    }
 
 
-
-public function Allproduct(){
-    $produk = Product::all();
-    return view('Produk.index',[
-        'product'=> $produk
-    ]);
-}
+    public function getProfile(Request $request, User $user)
+    {
+        $user = User::with('profile')->find($user->id);
+        // dd($user);
+        return view('Produk.profile', ['user' => $user]);
+    }
 
 }
