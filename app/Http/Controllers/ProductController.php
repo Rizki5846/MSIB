@@ -32,32 +32,31 @@ class ProductController extends Controller
             'kondisi' => 'required',
             'deskripsi' => 'required',
         ]);
-
+    
         // Cek apakah pengguna memiliki hak akses untuk memperbarui produk
-        if ($product->user_id === $user->id) {
-            // Ambil file gambar yang diunggah
-            $gambar = $request->file('gambar');
-            // Simpan gambar ke direktori yang ditentukan
-            $gambarPath = $gambar->store('public/images');
-
-            // Memperbarui atribut produk sesuai dengan data yang diterima dari permintaan
-            $product->nama = $request->nama;
-            $product->stok = $request->stok;
-            $product->berat = $request->berat;
-            $product->harga = $request->harga;
-            $product->deskripsi = $request->deskripsi;
-            $product->kondisi = $request->kondisi;
-            // Simpan lokasi gambar yang diunggah
-            $product->gambar = $gambarPath;
-            $product->save();
-
-            // Redirect ke halaman yang sesuai dengan pesan sukses
-            return redirect()->route('Produk.admin_page', ['user' => $user->id])->with('message', 'Berhasil update data');
-        } else {
-            // Jika pengguna tidak memiliki hak akses, kembalikan pesan error
-            return redirect()->back()->with('error', 'Anda tidak memiliki izin untuk memperbarui produk ini.');
+        if ($request->hasFile('gambar')) {
+            $path = $request->file('gambar')->storeAs(
+                'public/gambar',
+                'gambar' . time() . '.' . $request->file('gambar')->extension()
+            );
+            $product->gambar = basename($path);
         }
+    
+        // Memperbarui atribut produk sesuai dengan data yang diterima dari permintaan
+        $product->nama = $request->nama;
+        $product->stok = $request->stok;
+        $product->berat = $request->berat;
+        $product->harga = $request->harga;
+        $product->deskripsi = $request->deskripsi;
+        $product->kondisi = $request->kondisi;
+        // Simpan lokasi gambar yang diunggah
+        // $product->gambar = $gambarPath; // Remove this line as it's unnecessary
+        $product->save();
+    
+        // Redirect ke halaman yang sesuai dengan pesan sukses
+        return redirect()->route('Produk.admin_page', ['user' => $user->id])->with('message', 'Berhasil update data');
     }
+    
 
 
     public function deleteProduct(Request $request, User $user, Product $product)
