@@ -9,15 +9,21 @@ use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
+    
+    public function index()
+        {
+            $products = Product::all(); 
+            return view('products.index', ['products' => $products]);
+        }
     public function getAdmin(User $user)
     {
         $products = Product::where('user_id', $user->id)->get();
-        return view('Produk.admin_page', ['products' => $products, 'user' => $user]);
+        return view('products.admin_page', ['products' => $products, 'user' => $user]);
     }
 
     public function editProduct(Request $request, User $user, Product $product)
     {
-        return view('Produk.edit_product', ['product' => $product, 'user' => $user]);
+        return view('products.edit_product', ['product' => $product, 'user' => $user]);
     }
 
     public function updateProduct(Request $request, User $user, Product $product)
@@ -54,7 +60,7 @@ class ProductController extends Controller
         $product->save();
     
         // Redirect ke halaman yang sesuai dengan pesan sukses
-        return redirect()->route('Produk.admin_page', ['user' => $user->id])->with('message', 'Berhasil update data');
+        return redirect()->route('products.admin_page', ['user' => $user->id])->with('message', 'Berhasil update data');
     }
     
 
@@ -70,7 +76,7 @@ class ProductController extends Controller
 
     public function handleRequest(Request $request, User $user)
     {
-        return view('Produk.handle_request', ['user' => $user]);
+        return view('products.handle_request', ['user' => $user]);
     }
     public function postRequest(Request $request, User $user)
     {
@@ -106,7 +112,7 @@ class ProductController extends Controller
         $product->save();
     
         // Redirect ke halaman terkait
-        return redirect()->route('Produk.admin_page', ['user' => $user->id]);
+        return redirect()->route('products.admin_page', ['user' => $user->id]);
     }
 
     public function getProduct()
@@ -115,7 +121,7 @@ class ProductController extends Controller
         $user = User::find(1);
         $data = $user->products;
         // return view('list_product')->with('products', $data);
-        return view('Produk.products')->with('products', $data);
+        return view('products.products')->with('products', $data);
     }
 
 
@@ -123,7 +129,7 @@ class ProductController extends Controller
     {
         $user = User::with('profile')->find($user->id);
         // dd($user);
-        return view('Produk.profile', ['user' => $user]);
+        return view('products.profile', ['user' => $user]);
     }
 
 }

@@ -11,18 +11,36 @@
 </head>
 
 <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">Your App</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                            @csrf
+                        </form>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
     <div class="mx-lg-5 mt-lg-4 mb-lg-3">
         <div class="rounded bg-info pt-3 pb-3">
             <div class="row">
                 <div class="col-md-4 d-flex justify-content-start">
-                    <a href="{{ route('Produk.admin_page', ['user' => 1]) }}"
+                    <a href="{{ route('products.admin_page', ['user' => 1]) }}"
                         class="btn btn-md btn-primary fw-bold ms-3 h-75 m-auto">Halaman Pengguna Admin</a>
                 </div>
                 <div class="col-md-4">
                     <h2 class="text-center fw-bold mt-2">PRODUCTS</h2>
                 </div>
                 <div class="col-md-4 d-flex justify-content-end">
-                    <a href="{{ route('Produk.admin_page', ['user' => 2]) }}"
+                    <a href="{{ route('products.admin_page', ['user' => 2]) }}"
                         class="btn btn-md btn-success fw-bold ms-3 h-75 mt-2 me-3">Halaman Pengguna Merchant</a>
                 </div>
             </div>

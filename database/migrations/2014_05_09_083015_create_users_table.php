@@ -14,11 +14,14 @@ return new class extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('email');
+            $table->string('email')->unique();
             $table->enum('gender', ['male', 'female']);
             $table->integer('age');
             $table->date('birth');
             $table->text('alamat');
+            $table->enum('role', ['user', 'superadmin']);  // Pastikan 'user' dan 'superadmin' ada di enum
+            $table->string('password');
+            $table->rememberToken();
             $table->timestamps();
         });
     }
